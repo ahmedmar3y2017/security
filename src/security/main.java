@@ -28,8 +28,8 @@ public class main {
 		// System.out.println(hillcypher_enc("act"));
 		// System.out.println(hillcypher_edec("iopr"));
 
-		// One Time Pad enc test
-		// one_time_pad_enc("", "");
+		// One Time Pad enc , dec test
+		// System.out.println(one_time_pad_enc("\fV ", "wehavetomeetyou"));
 
 		// diffhelman
 		// find key
@@ -41,9 +41,8 @@ public class main {
 
 	}
 
-	// // enc
-	// // download aski code tables
-	// private static void one_time_pad_enc(String plain, String key) {
-	//
-	// }
+	public static void hillcypher3_enc() {
+
+	}
+
 }
