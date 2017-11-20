@@ -8,6 +8,12 @@ public class Ploy {
 	public static String letter_space = " abcdefghijklmnopqrstuvwxyz";
 
 	// ------------------------- ploy method ------------------------
+
+	public static void main(String[] args) {
+		// System.out.println(ploy_enc("fuel", "itys"));
+		// System.out.println(ploy_dec("oncd", "security"));
+	}
+
 	// ploy alphapitic encryption
 	public static StringBuilder ploy_enc(String plain, String kkey) {
 
@@ -17,16 +23,15 @@ public class Ploy {
 		StringBuilder result = new StringBuilder();
 		int inc = 0;
 		// check if plain text > key
-		for (;;) {
-			if (plain.length() > key.length()) {
+		while (plain.length() > key.length()) {// append again key
+			key.append(key.charAt(inc));
 
-				// append again key
-				key.append(key.charAt(inc));
+			inc++;
+		}
+		// check if plain text < key
+		if (plain.length() < key.length()) {
+			key.replace(0, key.length(), key.substring(0, plain.length()));
 
-				inc++;
-			} else {
-				break;
-			}
 		}
 
 		// get index for each element and add them then get new char
@@ -48,22 +53,24 @@ public class Ploy {
 
 		ArrayList<Integer> results = new ArrayList<>();
 		int inc = 0;
-		for (;;) {
-			if (cypher.length() > key.length()) {
+		// check if plain text > key
+		while (cypher.length() > key.length()) {// append again key
+			key.append(key.charAt(inc));
 
-				key.append(key.charAt(inc));
-				inc++;
-			} else {
-				break;
-			}
+			inc++;
+		}
+		// check if plain text < key
+		if (cypher.length() < key.length()) {
+			key.replace(0, key.length(), key.substring(0, cypher.length()));
+
 		}
 
 		for (int i = 0; i < cypher.length(); i++) {
 			int sub = letter_space.indexOf(cypher.charAt(i)) - letter_space.indexOf(key.charAt(i));
 
-			if (sub < 0) {
+			while (sub < 0) {
+				sub += letter_space.length();
 
-				sub += 27;
 			}
 			result.append(letter_space.charAt(Math.floorMod(sub, letter_space.length())));
 		}
