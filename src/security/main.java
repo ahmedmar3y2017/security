@@ -39,7 +39,233 @@ public class main {
 		// System.out.println(Rsa_enc("mohamed", 5, 7));
 		// System.out.println(Rsa_dec("molamkj", 5, 7));
 
+		// playfaire enc test
+		// enc
+		play_fair_enc("i have dollarg", "monarchy");
+
 	}
+
+	// ---------------------------- play fair --------------------------
+	// enc
+	public static void play_fair_enc(String pplain, String key) {
+
+		// --------------------- key condiotion ---------------
+		// no repeating
+		if (No_repeating(key)) {
+
+			// ------------------- plain condistions -------------------
+			// 1 - delete all white spaces
+			String plain = pplain.replaceAll("\\s", "");
+			// 2 - delete similar
+			StringBuilder ssBuilder = delete_similar(plain);
+			// convert to string
+			String plainString = ssBuilder.toString();
+
+			// 3 - divid to 2 chars
+			// if plain length != even
+			if (plainString.length() % 2 != 0) {
+				// if last char = x add -> z
+				if (plainString.charAt(plain.length() - 1) == 'x') {
+
+					// add z
+					plainString += "z";
+				}
+				// else add x
+				else {
+					// add x
+					plainString += "x";
+				}
+			}
+			// print plain after preparation
+			System.out.println(plainString);
+
+			// ------------------- start enc operations ------------------------
+			char[][] matrix = Build_matrix(key);
+			print_matrix(matrix);
+
+			// divid to 2 chars
+			for (int i = 0; i <= plainString.length(); i++) {
+				// condition to divide letter to 2 chars
+				if (i % 2 == 0 && i != 0) {
+					// divid
+					String s = plainString.substring(i - 2, i);
+					System.out.print(s + " , ");
+				}
+			}
+
+		} else {
+			System.out.println("Error Key Repeating ");
+		}
+
+	}
+
+	// build matrix 5*5
+	public static char[][] Build_matrix(String key) {
+		// init matrix 5*5
+		char[][] matrix = new char[5][5];
+		int count = 0;
+		int count1 = 0;
+		// add another chars
+		StringBuilder aanother = get_anotherchars(key);
+		// delete j because i =j from stringbuilder
+		StringBuilder another = null;
+		if (aanother.toString().contains("j") && key.contains("i")) {
+			// delete j from another
+			another = aanother.deleteCharAt(aanother.indexOf("j"));
+		}
+		// delete i because j=1 from stringbuilder
+		else if (aanother.toString().contains("i") && key.contains("j")) {
+			// delete i from another
+			another = aanother.deleteCharAt(aanother.indexOf("i"));
+		}
+
+		// delete j from another if contain i and j
+		else if (aanother.toString().contains("i") && aanother.toString().contains("j")) {
+			// delete j from another
+			another = aanother.deleteCharAt(aanother.indexOf("j"));
+		} else {
+
+			another = aanother;
+		}
+
+		// insert chars into matrix
+		for (int i = 0; i < matrix.length; i++) {
+
+			for (int j = 0; j < matrix.length; j++) {
+
+				if (count != key.length()) {
+
+					matrix[i][j] = key.charAt(count);
+					count++;
+				} else {
+
+					char cc = another.charAt(count1);
+
+					matrix[i][j] = cc;
+
+					count1++;
+
+				}
+
+			}
+
+		}
+
+		return matrix;
+
+	}
+
+	// get another chars as a stringbuilder from a -- > z and not contain key chars
+	private static StringBuilder get_anotherchars(String key) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0; i < letter.length(); i++) {
+			char c = letter.charAt(i);
+			if (!key.contains(String.valueOf(c))) {
+				stringBuilder.append(c);
+			}
+
+		}
+
+		return stringBuilder;
+	}
+
+	// delete sequence repeating chars
+	public static StringBuilder delete_similar(String plain) {
+
+		StringBuilder stringBuilder = new StringBuilder(plain);
+
+		// for each char
+		for (int i = 1; i < plain.length(); i++) {
+			// last char
+			char c = plain.charAt(i);
+			// previous char
+			char cc = plain.charAt(i - 1);
+			// if last = previous or (c=i and cc=j) or (c=j and cc=i)
+			if (c == cc || (c == 'i' && cc == 'j') || (c == 'j' && cc == 'i')) {
+				// if dublicated chars = x add - > z
+				if (c == 'x') {
+					// if last char
+					if (i == plain.length() - 1) {
+						// insert z
+						stringBuilder.insert(i + 1, 'z');
+					} else {
+						// if not last char insert z
+						stringBuilder.insert(i, 'z');
+
+					}
+
+				}
+				// else add x
+				else {
+					// if last char
+					if (i == plain.length() - 1) {
+
+						stringBuilder.insert(i + 1, 'x');
+					} else {
+						// if not last char
+						stringBuilder.insert(i, 'x');
+
+					}
+				}
+
+			}
+
+		}
+
+		return stringBuilder;
+
+	}
+
+	// return true if no repeating else if repeating
+
+	public static boolean No_repeating(String key) {
+
+		// if contains i and j -- > this is repeating alse return false
+		if (key.contains("i") && key.contains("j")) {
+
+			return false;
+
+		}
+
+		for (int i = 0; i < key.length(); i++) {
+
+			char c = key.charAt(i);
+			if (countOccurrences(key, c) > 1) {
+				return false;
+
+			}
+
+		}
+
+		return true;
+
+	}
+
+	// return number of occure char in string
+	public static int countOccurrences(String haystack, char needle) {
+		int count = 0;
+		for (int i = 0; i < haystack.length(); i++) {
+			if (haystack.charAt(i) == needle) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	// print matrix
+	public static void print_matrix(char c[][]) {
+
+		for (int i = 0; i < c.length; i++) {
+			for (int j = 0; j < c.length; j++) {
+
+				System.out.print(c[i][j] + " , ");
+			}
+			System.out.println();
+		}
+
+	}
+
+	// ------------------------------------------------------------------------------
 
 	public static void hillcypher3_enc(String plain) {
 		// delete all white spaces
