@@ -1,5 +1,7 @@
 package security;
 
+import java.util.ArrayList;
+
 public class main {
 	public static String letter = "abcdefghijklmnopqrstuvwxyz";
 	public static String letter_space = " abcdefghijklmnopqrstuvwxyz";
@@ -39,16 +41,18 @@ public class main {
 		// System.out.println(Rsa_enc("mohamed", 5, 7));
 		// System.out.println(Rsa_dec("molamkj", 5, 7));
 
-		// playfaire enc test
+		// playfaire enc , dec test
 		// enc
-		play_fair_enc("i have dollarg", "monarchy");
+		// System.out.println("Final Result is : " + play_fair_enc("kill the fox",
+		// "monarchy"));
 
 	}
 
 	// ---------------------------- play fair --------------------------
 	// enc
-	public static void play_fair_enc(String pplain, String key) {
+	public static StringBuilder play_fair_enc(String pplain, String key) {
 
+		StringBuilder cypher = new StringBuilder();
 		// --------------------- key condiotion ---------------
 		// no repeating
 		if (No_repeating(key)) {
@@ -60,12 +64,11 @@ public class main {
 			StringBuilder ssBuilder = delete_similar(plain);
 			// convert to string
 			String plainString = ssBuilder.toString();
-
 			// 3 - divid to 2 chars
 			// if plain length != even
 			if (plainString.length() % 2 != 0) {
 				// if last char = x add -> z
-				if (plainString.charAt(plain.length() - 1) == 'x') {
+				if (plainString.charAt(plainString.length() - 1) == 'x') {
 
 					// add z
 					plainString += "z";
@@ -90,8 +93,112 @@ public class main {
 					// divid
 					String s = plainString.substring(i - 2, i);
 					System.out.print(s + " , ");
+					// arrays of 2 chars
+					char[] c = s.toCharArray();
+					// get indexes from letter
+					int[] c_index = new int[2];
+					ArrayList<Integer> arrayList = new ArrayList<>();
+					for (int j = 0; j < c.length; j++) {
+						// array of c
+						ArrayList<Integer> l_index = Check_Index(c[j], matrix);
+						arrayList.addAll(l_index);
+						// System.out.print(l_index);
+
+					}
+					int x1 = arrayList.get(0);
+					int x2 = arrayList.get(2);
+					int y1 = arrayList.get(1);
+					int y2 = arrayList.get(3);
+					// the same row
+					if (x1 == x2) {
+						System.out.println("Same row");
+						// shift right by 1
+						// shift first char
+						if (y1 != 4) {
+							y1 += 1;
+
+						} else if (y1 == 4) {
+							y1 -= 4;
+
+						}
+						// shift first char
+						if (y2 != 4) {
+							y2 += 1;
+
+						} else if (y2 == 4) {
+							y2 -= 4;
+
+						}
+
+						char res1 = matrix[x1][y1];
+						char res2 = matrix[x2][y2];
+
+						cypher.append(res1);
+						cypher.append(res2);
+						// System.out.println(cypher + " , ");
+
+					}
+					// the same column
+					else if (y1 == y2) {
+						System.out.println("Same Column");
+						// shift right by 1
+						// shift down char
+						if (x1 != 4) {
+							x1 += 1;
+
+						} else if (x1 == 4) {
+							x1 -= 4;
+
+						}
+						// shift first char
+						if (x2 != 4) {
+							x2 += 1;
+
+						} else if (x2 == 4) {
+							x2 -= 4;
+
+						}
+
+						char res1 = matrix[x1][y1];
+						char res2 = matrix[x2][y2];
+
+						cypher.append(res1);
+						cypher.append(res2);
+						// System.out.println(cypher + " , ");
+
+					} else {
+						System.out.println("Not");
+						int x;
+						x = y1;
+						y1 = y2;
+						y2 = x;
+						char res1 = matrix[x1][y1];
+						char res2 = matrix[x2][y2];
+
+						cypher.append(res1);
+						cypher.append(res2);
+						// System.out.println(cypher + " , ");
+
+					}
+
 				}
 			}
+
+		} else {
+			System.out.println("Error Key Repeating ");
+		}
+
+		return cypher;
+
+	}
+
+	// dec
+	public static void play_fair_dec(String cypher, String key) {
+
+		StringBuilder plain = new StringBuilder();
+		// --------------------- key condiotion ---------------
+		// no repeating
+		if (No_repeating(key)) {
 
 		} else {
 			System.out.println("Error Key Repeating ");
@@ -265,6 +372,24 @@ public class main {
 
 	}
 
+	// print matrix
+	public static ArrayList<Integer> Check_Index(char cc, char c[][]) {
+		ArrayList<Integer> index = new ArrayList<>();
+		for (int i = 0; i < c.length; i++) {
+			for (int j = 0; j < c.length; j++) {
+
+				if (c[i][j] == cc) {
+					index.add(i);
+					index.add(j);
+
+				}
+
+			}
+
+		}
+		return index;
+
+	}
 	// ------------------------------------------------------------------------------
 
 	public static void hillcypher3_enc(String plain) {
