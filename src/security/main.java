@@ -50,7 +50,8 @@ public class main {
 
 	}
 
-	// ------------------------------------------------------------------------------
+	// ---------------------------- Hill cypher 3
+	// --------------------------------------------------
 
 	public static void hillcypher3_enc(String plain) {
 		// delete all white spaces
