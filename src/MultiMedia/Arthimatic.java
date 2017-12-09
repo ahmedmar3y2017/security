@@ -92,10 +92,13 @@ public class Arthimatic {
 			Range_lows[i] = low1;
 			Range_highs[i] = high1;
 			ranges[i] = rr;
-			// ---------------------------  print in android label --------------------------------------
+			// --------------------------- print in android label
+			// --------------------------------------
 			System.out.println(c + "\tLow : " + low1 + " \t " + "High : " + high1 + " \t " + "Range : " + rr);
 
 		}
+		System.out.println("Unique Range is : " + " [ " + Range_lows[Message.length() - 1] + " , "
+				+ Range_highs[Message.length() - 1] + " ] ");
 
 	}
 
@@ -129,7 +132,6 @@ public class Arthimatic {
 
 	}
 
-	
 	private static double calc_probalility(char c, String message) {
 		int count = 0;
 		double totalProbPos = message.length();
