@@ -129,18 +129,7 @@ public class Arthimatic {
 
 	}
 
-	// Method to sort a string alphabetically
-	public static String sortString(String inputString) {
-		// convert input string to char array
-		char tempArray[] = inputString.toCharArray();
-
-		// sort tempArray
-		Arrays.sort(tempArray);
-
-		// return new sorted string
-		return new String(tempArray);
-	}
-
+	
 	private static double calc_probalility(char c, String message) {
 		int count = 0;
 		double totalProbPos = message.length();
