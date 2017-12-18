@@ -1,15 +1,20 @@
 package security;
 
+import java.math.BigInteger;
+
 // ----------------- hillcypher 2*2 -----------------
 // complete 2 * 2 
 public class Hillcypher {
 	public static String letter = "abcdefghijklmnopqrstuvwxyz";
 	public static String letter_space = " abcdefghijklmnopqrstuvwxyz";
 
+	
+
 	// enc
-	public static StringBuilder hillcypher_enc(String plain) {
+	public static StringBuilder hillcypher_enc(int index00, int index01, int index10, int index11, String plain) {
 		// delete all white spaces
 		String plain_ = plain.replaceAll("\\s", "");
+
 		// number of letters
 		int n = letter.length();
 		// final cypher
@@ -17,11 +22,11 @@ public class Hillcypher {
 
 		// init matrix 2*2 as akey
 		int[][] key = new int[2][2];
-		key[0][0] = 9;
-		key[0][1] = 4;
+		key[0][0] = letter.indexOf("a");
+		key[0][1] = index01;
 
-		key[1][0] = 5;
-		key[1][1] = 7;
+		key[1][0] = index10;
+		key[1][1] = index11;
 		// mul main row
 		int mul1 = 1;
 		// mul second row
@@ -105,16 +110,16 @@ public class Hillcypher {
 			return cypher;
 			// System.out.println(plain);
 		} else {
+			cypher.append("");
 			System.out.println("error");
 		}
 
-		return null;
+		return cypher;
 	}
 
 	// mul 2 matrix (2*1)(2*2)
 	private static int[] mul_matrix(int[] c_index, int[][] key) {
 		// mul matrix 2*2
-		int[] result = new int[2];
 		int[] cyl_result = new int[2];
 		// System.out.println(key.length);
 		for (int i = 0; i < key.length; i++) {
@@ -152,13 +157,48 @@ public class Hillcypher {
 
 	// calculate gcd
 	public static int gcd(int a, int b) {
-		if (a == 0 || b == 0)
-			return a + b; // base case
-		return gcd(b, a % b);
+		int gcd = 0;
+		if (a == 0 || b == 0) {
+			gcd = 0; // base case
+		} else {
+
+			// a>b B>a a==b
+			if (a > b) {
+				for (int i = b; i > 0; i--) {
+
+					if (a % i == 0 && b % i == 0) {
+						gcd = i;
+						break;
+
+					}
+
+				}
+
+			} else if (a < b) {
+
+				for (int i = a; i > 0; i--) {
+
+					if (a % i == 0 && b % i == 0) {
+						gcd = i;
+						break;
+
+					}
+
+				}
+			}
+			// a==b
+			else {
+				gcd = a;
+
+			}
+
+		}
+
+		return gcd;
 	}
 
 	// dec
-	public static StringBuilder hillcypher_edec(String cypher) {
+	public static StringBuilder hillcypher_edec(int index00, int index01, int index10, int index11, String cypher) {
 		// delete all white spaces
 		String cypher_ = cypher.replaceAll("\\s", "");
 		// number of letters
@@ -167,11 +207,11 @@ public class Hillcypher {
 		StringBuilder plain = new StringBuilder();
 		// init matrix 2*2 as akey
 		int[][] key = new int[2][2];
-		key[0][0] = 9;
-		key[0][1] = 4;
+		key[0][0] = index00;
+		key[0][1] = index01;
 
-		key[1][0] = 5;
-		key[1][1] = 7;
+		key[1][0] = index10;
+		key[1][1] = index11;
 		// mul main row
 		int mul1 = 1;
 		// mul second row
@@ -213,7 +253,7 @@ public class Hillcypher {
 				cypher_ += "a";
 			}
 
-			int[][] key_inverse = matrix_inverse(key);
+			int[][] key_inverse = matrix_inverse(key, key_value);
 			// divid to 2 chars
 			for (int i = 0; i <= cypher_.length(); i++) {
 				// condition to divide letter to 2 chars
@@ -253,16 +293,17 @@ public class Hillcypher {
 			}
 			return plain;
 		} else {
+			plain.append("");
 			System.out.println("Error ");
 
 		}
-		return null;
+		return plain;
 	}
 
 	// find matrix inverse = ( multiplicative inverse * mathimatical inverse )
-	public static int[][] matrix_inverse(int[][] key) {
+	public static int[][] matrix_inverse(int[][] key, int key_value) {
 		// 1 - find multiplicative inverse
-		int multiplicative_inverse = findInverse(17, 26)[0];
+		int multiplicative_inverse = findInverse(key_value, letter.length());
 		// if mutiplicative inserse < 0 add 26
 		while (multiplicative_inverse < 0) {
 			multiplicative_inverse += letter.length();
@@ -307,27 +348,12 @@ public class Hillcypher {
 
 	}
 
-	// calc inverse
-	public static int[] findInverse(int a, int b) {
-		int x = 0, y = 1, lastx = 1, lasty = 0;
-		while (b != 0) {
-			int quotient = a / b;
+	public static int findInverse(int num1, int num2) {
+		BigInteger b1 = new BigInteger(String.valueOf(num1));
+		BigInteger b2 = new BigInteger(String.valueOf(num2));
 
-			int temp = a;
-			a = b;
-			b = temp % b;
+		return b1.modInverse(b2).intValue();
 
-			temp = x;
-			x = lastx - quotient * x;
-			lastx = temp;
-
-			temp = y;
-			y = lasty - quotient * y;
-			lasty = temp;
-		}
-
-		int[] coefficients = { lastx, lasty, a };
-		return coefficients;
 	}
 
 }

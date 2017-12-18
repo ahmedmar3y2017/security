@@ -126,7 +126,7 @@ public class Combination {
 	}
 
 	// dec
-	private static StringBuilder combination_Substitution_dec(String ccypher) {
+	public static StringBuilder combination_Substitution_dec(String ccypher) {
 		char[] row = { 'a', 'b', 'c', 'd', 'e' };
 		char[] col = { 'a', 'b', 'c', 'd', 'e' };
 		StringBuilder text_cypher = new StringBuilder();

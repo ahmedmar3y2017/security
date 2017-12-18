@@ -1,11 +1,20 @@
 package security;
 
+import java.math.BigInteger;
+
 public class Rsa {
 	public static String letter = "abcdefghijklmnopqrstuvwxyz";
+
+	// public static void main(String[] args) {
+	// System.out.println(gcd(25, 26));
+	// System.out.println(gcd1(25,26));
+	//
+	// }
 
 	// ------------------ Rsa -----------------------
 	// Enc
 	public static StringBuilder Rsa_enc(String plain, int p, int q) {
+
 		StringBuilder cypher = new StringBuilder();
 		int n = p * q;
 		int z = (p - 1) * (q - 1);
@@ -45,9 +54,9 @@ public class Rsa {
 
 		}
 
-		int D = findInverse(E, z)[0];
+		int D = findInverse(E, z);
 
-		while (D < 0) {
+		while (D < 0 || D == E) {
 			D += z;
 		}
 
@@ -59,33 +68,54 @@ public class Rsa {
 		return plain;
 	}
 
-	// calc inverse
-	public static int[] findInverse(int a, int b) {
-		int x = 0, y = 1, lastx = 1, lasty = 0;
-		while (b != 0) {
-			int quotient = a / b;
+	public static int findInverse(int num1, int num2) {
+		BigInteger b1 = new BigInteger(String.valueOf(num1));
+		BigInteger b2 = new BigInteger(String.valueOf(num2));
 
-			int temp = a;
-			a = b;
-			b = temp % b;
+		return b1.modInverse(b2).intValue();
 
-			temp = x;
-			x = lastx - quotient * x;
-			lastx = temp;
-
-			temp = y;
-			y = lasty - quotient * y;
-			lasty = temp;
-		}
-
-		int[] coefficients = { lastx, lasty, a };
-		return coefficients;
 	}
 
 	// calculate gcd
 	public static int gcd(int a, int b) {
-		if (a == 0 || b == 0)
-			return a + b; // base case
-		return gcd(b, a % b);
+		int gcd = 0;
+		if (a == 0 || b == 0) {
+			gcd = 0; // base case
+		} else {
+
+			// a>b B>a a==b
+			if (a > b) {
+				for (int i = b; i > 0; i--) {
+
+					if (a % i == 0 && b % i == 0) {
+						gcd = i;
+						break;
+
+					}
+
+				}
+
+			} else if (a < b) {
+
+				for (int i = a; i > 0; i--) {
+
+					if (a % i == 0 && b % i == 0) {
+						gcd = i;
+						break;
+
+					}
+
+				}
+			}
+			// a==b
+			else {
+				gcd = a;
+
+			}
+
+		}
+
+		return gcd;
 	}
+
 }

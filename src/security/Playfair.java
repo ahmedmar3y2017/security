@@ -70,7 +70,7 @@ public class Playfair {
 					if (x1 == x2) {
 						System.out.println("Same row");
 						// shift right by 1
-						// shift first char
+
 						if (y1 != 4) {
 							y1 += 1;
 
@@ -143,6 +143,8 @@ public class Playfair {
 
 		} else {
 			System.out.println("Error Key Repeating ");
+			cypher.append("1");
+
 		}
 
 		return cypher;
@@ -157,7 +159,7 @@ public class Playfair {
 		// no repeating
 		if (No_repeating(key)) {
 
-			// ------------------- plain condistions -------------------
+			// ------------------- plain conditions -------------------
 			// 1 - delete all white spaces
 			String cypher = ccypher.replaceAll("\\s", "");
 			// 2 - delete similar
@@ -284,6 +286,7 @@ public class Playfair {
 
 		} else {
 			System.out.println("Error Key Repeating ");
+			plain.append("1");
 		}
 
 		return plain;
@@ -304,7 +307,7 @@ public class Playfair {
 			// delete j from another
 			another = aanother.deleteCharAt(aanother.indexOf("j"));
 		}
-		// delete i because j=1 from stringbuilder
+		// delete i because j=i from stringbuilder
 		else if (aanother.toString().contains("i") && key.contains("j")) {
 			// delete i from another
 			another = aanother.deleteCharAt(aanother.indexOf("i"));
